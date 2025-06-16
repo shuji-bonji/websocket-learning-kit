@@ -1,0 +1,244 @@
+---
+title: "WebSocket入門 - リアルタイム通信の基礎"
+chapter: 1
+description: "WebSocketとは何か、なぜ必要なのかを学び、最初のWebSocket接続を体験します"
+estimatedTime: "1-2時間"
+---
+
+<script lang="ts">
+  // Svelte 5対応のインポート
+  import WebSocketDemo from '$lib/components/WebSocketDemo.svelte';
+  import type { ConnectionState } from '$lib/types/websocket';
+  
+  // フロントマターの変数をpropsとして受け取り
+  let title = "WebSocket入門 - リアルタイム通信の基礎";
+  let chapter = 1;
+  
+  // ローカル状態
+  let demoConnected = $state(false);
+  let connectionState = $state<ConnectionState>('disconnected');
+</script>
+
+<style>
+  :global(body) {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #1a202c;
+  }
+  
+  :global(h1) {
+    color: #2d3748;
+    border-bottom: 2px solid #ff3e00;
+    padding-bottom: 0.5rem;
+  }
+  
+  :global(h2) {
+    color: #2d3748;
+    margin-top: 2rem;
+  }
+  
+  :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  
+  :global(th, td) {
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  
+  :global(th) {
+    background: #f7fafc;
+    font-weight: 600;
+  }
+  
+  :global(code) {
+    background: #f1f5f9;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-family: 'SF Mono', 'Monaco', monospace;
+  }
+  
+  :global(pre) {
+    background: #2d3748;
+    color: #f7fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  :global(pre code) {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  
+  :global(blockquote) {
+    border-left: 4px solid #3b82f6;
+    background: #f8fafc;
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .chapter-badge {
+    display: inline-block;
+    background: #ff3e00;
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="chapter-header">
+  <div class="chapter-badge">Chapter {chapter}</div>
+  <h1>{title}</h1>
+  <p><strong>推定時間:</strong> 1-2時間</p>
+</div>
+
+## 📖 学習目標
+
+この章を完了すると、以下ができるようになります：
+
+- [ ] WebSocketの基本概念を説明できる
+- [ ] HTTPとWebSocketの違いを理解している
+- [ ] ブラウザでWebSocket接続を実行できる
+- [ ] WebSocketの適用場面を判断できる
+
+## 🔍 WebSocketとは？
+
+**WebSocket**は、クライアント（ブラウザ）とサーバー間で**双方向のリアルタイム通信**を可能にするプロトコルです。
+
+従来のHTTPでは、クライアントからサーバーへのリクエスト → サーバーからクライアントへのレスポンスという一方向の通信でした。しかし、WebSocketでは一度接続が確立されると、クライアントとサーバーが自由にデータを送受信できます。
+
+### HTTPとWebSocketの違い
+
+| 特徴 | HTTP | WebSocket |
+|------|------|-----------|
+| **通信方向** | 一方向（リクエスト→レスポンス） | 双方向 |
+| **接続** | リクエスト毎に開閉 | 永続的な接続 |
+| **オーバーヘッド** | 高い（毎回ヘッダー送信） | 低い（最初だけハンドシェイク） |
+| **リアルタイム性** | 低い（ポーリングが必要） | 高い（即座に送受信） |
+| **ReadyState** | なし | 4つの状態（0-3）で管理 |
+
+## 🚀 実際に体験してみましょう
+
+下のデモでWebSocket接続を試してください：
+
+<WebSocketDemo 
+  serverUrl="wss://echo.websocket.org"
+  autoConnect={false}
+  showLogs={true}
+/>
+
+> **解説**: 上記は実際に動作するWebSocketエコーサーバー（`wss://echo.websocket.org`）です。送信したメッセージがそのまま返ってきます。
+
+## 💡 ここで何が起こっているか？
+
+WebSocket接続では以下の流れで通信が行われます：
+
+### 1. 接続確立
+```typescript
+const ws: WebSocket = new WebSocket('wss://echo.websocket.org');
+
+// 接続状態を確認
+console.log(ws.readyState); // 0 (CONNECTING)
+```
+
+### 2. イベントハンドラーの設定
+```typescript
+ws.onopen = (event: Event): void => {
+  console.log('接続が確立されました');
+  console.log(ws.readyState); // 1 (OPEN)
+};
+
+ws.onmessage = (event: MessageEvent<string>): void => {
+  console.log('受信:', event.data);
+};
+
+ws.onclose = (event: CloseEvent): void => {
+  console.log(`接続終了 (code: ${event.code})`);
+  console.log(ws.readyState); // 3 (CLOSED)
+};
+
+ws.onerror = (event: Event): void => {
+  console.error('エラーが発生しました:', event);
+};
+```
+
+### 3. メッセージ送信
+```typescript
+// 接続が確立してから送信
+if (ws.readyState === WebSocket.OPEN) {
+  ws.send('Hello WebSocket!');
+}
+```
+
+## 🎯 WebSocketが活躍する場面
+
+### 主要な11カテゴリー
+
+1. **リアルタイム通信**: チャットアプリ（Discord、Slack）
+2. **共同編集**: Google Docs、Figma、VS Code Live Share
+3. **通知・アラート**: 在庫更新、システム監視アラート
+4. **データ配信**: 株価、為替、スポーツライブスコア
+5. **IoT連携**: スマートホーム、センサーデータ
+6. **PWA統合**: オフライン対応、プッシュ通知
+7. **シミュレーション**: 教育用、マルチプレイヤー
+8. **バックエンド連携**: GraphQL Subscriptions、RPC
+9. **セキュリティ・監査**: セッション監視、ログ管理
+10. **金融・医療**: リアルタイム取引、患者モニタリング
+11. **VR/メタバース**: アバター同期、空間共有
+
+### 適さない場面
+- **静的コンテンツ配信**: 画像、CSS、JSファイル
+- **一方向データ取得**: REST APIで十分な場合
+- **低頻度更新**: 数時間に1回程度の更新
+
+## 📝 演習1: 接続状態の理解
+
+以下のコードの`readyState`の値を予測してください：
+
+```typescript
+const ws = new WebSocket('wss://echo.websocket.org');
+console.log('A:', ws.readyState); // ?
+
+ws.onopen = () => {
+  console.log('B:', ws.readyState); // ?
+  ws.close();
+};
+
+ws.onclose = () => {
+  console.log('C:', ws.readyState); // ?
+};
+```
+
+**答え**: A: 0 (CONNECTING), B: 1 (OPEN), C: 3 (CLOSED)
+
+## 🏃‍♀️ 次のステップ
+
+おめでとうございます！WebSocketの基本概念とTypeScriptでの実装方法を理解できました。
+
+次の章では、WebSocketを取り巻くネットワーク技術について学習します。
+
+---
+
+**進捗**: Chapter 1 完了 🎉

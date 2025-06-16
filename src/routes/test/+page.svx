@@ -1,0 +1,32 @@
+---
+title: "MDsveXテスト"
+chapter: 1
+---
+
+<script>
+  let currentTime = new Date().toLocaleString();
+</script>
+
+# WebSocket学習環境テスト
+
+このページが表示されれば、MDsveXは正常に動作しています！
+
+**現在時刻**: {currentTime}
+
+## 確認項目
+
+- [x] MDsveXファイルが読み込まれる
+- [x] フロントマター（title, chapter）が動作する  
+- [x] Svelteコンポーネント構文が動作する
+- [ ] レイアウトファイルの設定（次のステップ）
+
+## フロントマター情報
+
+- **タイトル**: {title}
+- **章番号**: {chapter}
+
+## 次のステップ
+
+1. このページが表示されることを確認
+2. レイアウトファイルを正しく設定
+3. WebSocketデモを追加

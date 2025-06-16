@@ -1,0 +1,52 @@
+---
+title: "WebSocket入門"
+---
+
+<script lang="ts">
+  import WebSocketDemo from '$lib/components/WebSocketDemo.svelte';
+  
+  let title = "WebSocket入門";
+</script>
+
+<style>
+  :global(body) {
+    font-family: system-ui, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  h1 {
+    color: #2d3748;
+    border-bottom: 2px solid #ff3e00;
+    padding-bottom: 0.5rem;
+  }
+  
+  h2 {
+    color: #2d3748;
+    margin-top: 2rem;
+  }
+</style>
+
+# {title}
+
+## WebSocketとは？
+
+WebSocketは双方向のリアルタイム通信を可能にするプロトコルです。
+
+## 実際に体験
+
+<WebSocketDemo 
+  serverUrl="wss://echo.websocket.org"
+  autoConnect={false}
+  showLogs={true}
+/>
+
+## HTTPとの違い
+
+| 特徴 | HTTP | WebSocket |
+|------|------|-----------|
+| 通信方向 | 一方向 | 双方向 |
+| 接続 | リクエスト毎 | 永続的 |
+
+これで基本的なWebSocket学習ができます！

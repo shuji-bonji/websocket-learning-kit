@@ -1,18 +1,11 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { mdsvex } from 'mdsvex';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('mdsvex').MdsvexOptions} */
 const mdsvexOptions = {
-	extensions: ['.svx'],
-	layout: {
-		// 絶対パスで指定（推奨）
-		_: join(__dirname, './src/mdsvex.svelte')
-	}
+	extensions: ['.svx']
+	// レイアウトなし
 };
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -22,6 +15,7 @@ const config = {
 	kit: {
 		adapter: adapter()
 	}
+	// runes modeは有効のまま（SvelteKitの正常動作に必要）
 };
 
 export default config;

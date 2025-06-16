@@ -1,0 +1,16 @@
+<script lang="ts">
+	import '../app.css';
+</script>
+
+<div class="app">
+	<slot />
+</div>
+
+<style>
+	.app {
+		min-height: 100vh;
+		padding: 2rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+</style>

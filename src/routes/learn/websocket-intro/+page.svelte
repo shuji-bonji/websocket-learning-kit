@@ -1,11 +1,10 @@
 <!-- src/routes/learn/websocket-intro/+page.svelte -->
 <script lang="ts">
+  import ChapterHeader from '$lib/components/learning/ChapterHeader.svelte';
+  import CodeBlock from '$lib/components/learning/CodeBlock.svelte';
+  import ExerciseBox from '$lib/components/learning/ExerciseBox.svelte';
   import WebSocketDemo from '$lib/components/WebSocketDemo.svelte';
   
-  let title = "WebSocket入門";
-  let chapter = 1;
-  
-  // コードブロックを文字列として定義（構文エラーを修正）
   const httpPollingCode = `// 従来のHTTP方式（ポーリング）
 async function checkMessages() {
   setInterval(async () => {
@@ -77,235 +76,241 @@ ws.onclose = () => {
   <meta name="description" content="WebSocketの基本概念と使い方を学ぶ入門編" />
 </svelte:head>
 
-<div class="container">
+<div class="page-container">
   <!-- 章ヘッダー -->
-  <div class="chapter-header">
-    <div class="chapter-badge">Chapter {chapter}</div>
-    <h1>🔗 {title}</h1>
-    <p>WebSocketの基本概念と使い方を学び、従来のHTTP通信との違いを理解します</p>
-  </div>
-
-  <!-- 学習目標 -->
-  <div class="objectives-section">
-    <h2>📖 学習目標</h2>
-    <ul>
-      <li>WebSocketとHTTPの違いを説明できる</li>
-      <li>WebSocketの適用場面を判断できる</li>
-      <li>ブラウザ標準WebSocket APIの基本操作ができる</li>
-      <li>接続状態（readyState）の変化を理解する</li>
-    </ul>
-  </div>
-
-  <!-- WebSocketとは -->
-  <h2>🌐 WebSocketとは何か？</h2>
-  <p>
-    <strong>WebSocket</strong>は、クライアント（ブラウザ）とサーバー間で
-    <strong>双方向のリアルタイム通信</strong>を可能にするプロトコルです。
-  </p>
-
-  <h3>従来のHTTP通信の制限</h3>
-  <div class="code-block">
-    <pre><code>{httpPollingCode}</code></pre>
-  </div>
-
-  <div class="problem-list">
-    <h4>問題点:</h4>
-    <ul>
-      <li>🔄 無駄なリクエストが多い</li>
-      <li>⚡ リアルタイム性に欠ける</li>
-      <li>📈 サーバー負荷が高い</li>
-      <li>💰 帯域幅の浪費</li>
-    </ul>
-  </div>
-
-  <h3>WebSocketによる解決</h3>
-  <div class="code-block">
-    <pre><code>{websocketCode}</code></pre>
-  </div>
-
-  <div class="benefit-list">
-    <h4>利点:</h4>
-    <ul>
-      <li>⚡ 真のリアルタイム通信</li>
-      <li>🚀 低レイテンシ</li>
-      <li>💡 効率的なリソース使用</li>
-      <li>🔄 双方向通信</li>
-    </ul>
-  </div>
-
-  <!-- 接続状態表 -->
-  <h2>🔗 WebSocket接続状態</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>定数</th>
-        <th>値</th>
-        <th>状態</th>
-        <th>説明</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>CONNECTING</code></td>
-        <td>0</td>
-        <td>接続中</td>
-        <td>WebSocketコンストラクタ直後</td>
-      </tr>
-      <tr>
-        <td><code>OPEN</code></td>
-        <td>1</td>
-        <td>接続済み</td>
-        <td>データ送受信可能</td>
-      </tr>
-      <tr>
-        <td><code>CLOSING</code></td>
-        <td>2</td>
-        <td>切断中</td>
-        <td>close()実行後</td>
-      </tr>
-      <tr>
-        <td><code>CLOSED</code></td>
-        <td>3</td>
-        <td>切断済み</td>
-        <td>完全に切断された状態</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- 基本的な使い方 -->
-  <h2>💻 基本的な使い方</h2>
-
-  <h3>1. 接続確立</h3>
-  <div class="code-block">
-    <pre><code>{basicApiCode}</code></pre>
-  </div>
-
-  <h3>2. イベントハンドラーの設定</h3>
-  <div class="code-block">
-    <pre><code>{eventHandlerCode}</code></pre>
-  </div>
-
-  <h3>3. メッセージ送信</h3>
-  <div class="code-block">
-    <pre><code>{sendMessageCode}</code></pre>
-  </div>
-
-  <!-- 実際のデモ -->
-  <h2>🚀 実際に体験してみよう</h2>
-  <p>以下のデモでWebSocketの動作を実際に体験できます：</p>
-  
-  <WebSocketDemo 
-    serverUrl="wss://echo.websocket.org" 
-    autoConnect={false}
-    showLogs={true}
+  <ChapterHeader 
+    chapter={1}
+    title="🔗 WebSocket入門"
+    description="WebSocketの基本概念と使い方を学び、従来のHTTP通信との違いを理解します"
+    estimatedTime="3-4時間"
+    exercises={3}
+    difficulty="beginner"
+    tags={["WebSocket", "リアルタイム通信", "Web API"]}
+    objectives={[
+      "WebSocketとHTTPの違いを説明できる",
+      "WebSocketの適用場面を判断できる", 
+      "ブラウザ標準WebSocket APIの基本操作ができる",
+      "接続状態（readyState）の変化を理解する"
+    ]}
   />
 
-  <!-- 適用場面 -->
-  <h2>🎯 WebSocketが活躍する場面</h2>
-  <div class="use-cases">
-    <div class="use-case-card">
-      <h3>💬 リアルタイム通信</h3>
-      <ul>
-        <li>チャットアプリ（Discord、Slack）</li>
-        <li>ライブサポート</li>
-        <li>コメント機能</li>
-      </ul>
-    </div>
-    
-    <div class="use-case-card">
-      <h3>✏️ 共同編集</h3>
-      <ul>
-        <li>Google Docs風エディタ</li>
-        <li>Figma、Miro</li>
-        <li>VS Code Live Share</li>
-      </ul>
-    </div>
-    
-    <div class="use-case-card">
-      <h3>📊 データ配信</h3>
-      <ul>
-        <li>株価、為替情報</li>
-        <li>スポーツライブスコア</li>
-        <li>IoTセンサーデータ</li>
-      </ul>
-    </div>
-    
-    <div class="use-case-card">
-      <h3>🎮 ゲーム</h3>
-      <ul>
-        <li>マルチプレイヤーゲーム</li>
-        <li>リアルタイム対戦</li>
-        <li>位置情報共有</li>
-      </ul>
-    </div>
-  </div>
+  <!-- メインコンテンツ -->
+  <main class="content">
+    <!-- WebSocketとは -->
+    <section>
+      <h2>🌐 WebSocketとは何か？</h2>
+      <p>
+        <strong>WebSocket</strong>は、クライアント（ブラウザ）とサーバー間で
+        <strong>双方向のリアルタイム通信</strong>を可能にするプロトコルです。
+      </p>
 
-  <!-- 演習 -->
-  <h2>📝 演習: 接続状態の理解</h2>
-  <p>以下のコードの<code>readyState</code>の値を予測してください：</p>
-  
-  <div class="code-block">
-    <pre><code>{exerciseCode}</code></pre>
-  </div>
+      <h3>従来のHTTP通信の制限</h3>
+      <CodeBlock code={httpPollingCode} title="polling.ts" />
 
-  <details class="exercise-answer">
-    <summary>💡 答えを見る</summary>
-    <div class="answer-content">
-      <ul>
-        <li><strong>A: 0 (CONNECTING)</strong> - WebSocketコンストラクタ直後は接続中状態</li>
-        <li><strong>B: 1 (OPEN)</strong> - onopen内では接続確立済み</li>
-        <li><strong>C: 3 (CLOSED)</strong> - onclose内では完全に閉じられた状態</li>
-      </ul>
-    </div>
-  </details>
-
-  <!-- まとめ -->
-  <div class="summary-section">
-    <h2>📋 この章のまとめ</h2>
-    <div class="summary-grid">
-      <div class="summary-card">
-        <h3>✅ 理解したこと</h3>
+      <div class="problem-list">
+        <h4>問題点:</h4>
         <ul>
-          <li>WebSocketの基本概念</li>
-          <li>HTTPとの違い</li>
-          <li>接続状態の種類</li>
-          <li>基本的なAPI使用法</li>
+          <li>🔄 無駄なリクエストが多い</li>
+          <li>⚡ リアルタイム性に欠ける</li>
+          <li>📈 サーバー負荷が高い</li>
+          <li>💰 帯域幅の浪費</li>
         </ul>
+      </div>
+
+      <h3>WebSocketによる解決</h3>
+      <CodeBlock code={websocketCode} title="websocket.ts" />
+
+      <div class="benefit-list">
+        <h4>利点:</h4>
+        <ul>
+          <li>⚡ 真のリアルタイム通信</li>
+          <li>🚀 低レイテンシ</li>
+          <li>💡 効率的なリソース使用</li>
+          <li>🔄 双方向通信</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 接続状態 -->
+    <section>
+      <h2>🔗 WebSocket接続状態</h2>
+      <div class="state-table">
+        <table>
+          <thead>
+            <tr>
+              <th>定数</th>
+              <th>値</th>
+              <th>状態</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>CONNECTING</code></td>
+              <td>0</td>
+              <td>接続中</td>
+              <td>WebSocketコンストラクタ直後</td>
+            </tr>
+            <tr>
+              <td><code>OPEN</code></td>
+              <td>1</td>
+              <td>接続済み</td>
+              <td>データ送受信可能</td>
+            </tr>
+            <tr>
+              <td><code>CLOSING</code></td>
+              <td>2</td>
+              <td>切断中</td>
+              <td>close()実行後</td>
+            </tr>
+            <tr>
+              <td><code>CLOSED</code></td>
+              <td>3</td>
+              <td>切断済み</td>
+              <td>完全に切断された状態</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 基本的な使い方 -->
+    <section>
+      <h2>💻 基本的な使い方</h2>
+
+      <h3>1. 接続確立</h3>
+      <CodeBlock code={basicApiCode} title="connection.ts" />
+
+      <h3>2. イベントハンドラーの設定</h3>
+      <CodeBlock code={eventHandlerCode} title="handlers.ts" />
+
+      <h3>3. メッセージ送信</h3>
+      <CodeBlock code={sendMessageCode} title="send-message.ts" />
+    </section>
+
+    <!-- 実際のデモ -->
+    <section>
+      <h2>🚀 実際に体験してみよう</h2>
+      <p>以下のデモでWebSocketの動作を実際に体験できます：</p>
+      
+      <WebSocketDemo 
+        serverUrl="wss://echo.websocket.org" 
+        autoConnect={false}
+        showLogs={true}
+      />
+    </section>
+
+    <!-- 適用場面 -->
+    <section>
+      <h2>🎯 WebSocketが活躍する場面</h2>
+      <div class="use-cases">
+        <div class="use-case-card">
+          <h3>💬 リアルタイム通信</h3>
+          <ul>
+            <li>チャットアプリ（Discord、Slack）</li>
+            <li>ライブサポート</li>
+            <li>コメント機能</li>
+          </ul>
+        </div>
+        
+        <div class="use-case-card">
+          <h3>✏️ 共同編集</h3>
+          <ul>
+            <li>Google Docs風エディタ</li>
+            <li>Figma、Miro</li>
+            <li>VS Code Live Share</li>
+          </ul>
+        </div>
+        
+        <div class="use-case-card">
+          <h3>📊 データ配信</h3>
+          <ul>
+            <li>株価、為替情報</li>
+            <li>スポーツライブスコア</li>
+            <li>IoTセンサーデータ</li>
+          </ul>
+        </div>
+        
+        <div class="use-case-card">
+          <h3>🎮 ゲーム</h3>
+          <ul>
+            <li>マルチプレイヤーゲーム</li>
+            <li>リアルタイム対戦</li>
+            <li>位置情報共有</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 演習 -->
+    <ExerciseBox 
+      title="接続状態の理解" 
+      type="quiz" 
+      difficulty="easy"
+      showAnswer={true}
+    >
+      <div slot="content">
+        <p>以下のコードの<code>readyState</code>の値を予測してください：</p>
+        <CodeBlock code={exerciseCode} />
       </div>
       
-      <div class="summary-card">
-        <h3>🎯 適用場面</h3>
+      <div slot="answer">
         <ul>
-          <li>リアルタイム通信</li>
-          <li>共同編集システム</li>
-          <li>データ配信</li>
-          <li>ゲーム開発</li>
+          <li><strong>A: 0 (CONNECTING)</strong> - WebSocketコンストラクタ直後は接続中状態</li>
+          <li><strong>B: 1 (OPEN)</strong> - onopen内では接続確立済み</li>
+          <li><strong>C: 3 (CLOSED)</strong> - onclose内では完全に閉じられた状態</li>
         </ul>
       </div>
-    </div>
-  </div>
+    </ExerciseBox>
 
-  <!-- 次のステップ -->
-  <div class="next-step">
-    <h2>🏃‍♀️ 次のステップ</h2>
-    <p>おめでとうございます！WebSocketの基本概念を理解できました。</p>
-    <p>次の章では、WebSocketとHTTP/2、HTTP/3との関係について詳しく学習します。</p>
-    
-    <div class="navigation-buttons">
-      <a href="/learn" class="btn btn-secondary">目次に戻る</a>
-      <a href="/learn/network-basics" class="btn btn-primary">次の章へ →</a>
-    </div>
-  </div>
+    <!-- まとめ -->
+    <section class="summary">
+      <h2>📋 この章のまとめ</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>✅ 理解したこと</h3>
+          <ul>
+            <li>WebSocketの基本概念</li>
+            <li>HTTPとの違い</li>
+            <li>接続状態の種類</li>
+            <li>基本的なAPI使用法</li>
+          </ul>
+        </div>
+        
+        <div class="summary-card">
+          <h3>🎯 適用場面</h3>
+          <ul>
+            <li>リアルタイム通信</li>
+            <li>共同編集システム</li>
+            <li>データ配信</li>
+            <li>ゲーム開発</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <hr style="margin: 3rem 0; border: none; border-top: 1px solid #e2e8f0;">
-  <p style="text-align: center; color: #10b981; font-weight: 500;">
-    <strong>進捗</strong>: Chapter 1 完了 🎉
-  </p>
+    <!-- 次のステップ -->
+    <div class="next-step">
+      <h2>🏃‍♀️ 次のステップ</h2>
+      <p>おめでとうございます！WebSocketの基本概念を理解できました。</p>
+      <p>次の章では、WebSocketとHTTP/2、HTTP/3との関係について詳しく学習します。</p>
+      
+      <div class="navigation-buttons">
+        <a href="/learn" class="btn btn-secondary">📚 目次に戻る</a>
+        <a href="/learn/network-basics" class="btn btn-primary">次の章へ →</a>
+      </div>
+    </div>
+
+    <hr class="chapter-end" />
+    <p class="completion-message">
+      <strong>進捗</strong>: Chapter 1 完了 🎉
+    </p>
+  </main>
 </div>
 
 <style>
-  .container {
-    max-width: 900px;
+  .page-container {
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     font-family: system-ui, -apple-system, sans-serif;
@@ -313,77 +318,44 @@ ws.onclose = () => {
     color: #1a202c;
   }
   
-  /* 章ヘッダー */
-  .chapter-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+  .content {
+    background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
   
-  .chapter-badge {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    display: inline-block;
-    backdrop-filter: blur(10px);
+  section {
+    margin: 3rem 0;
   }
   
-  .chapter-header h1 {
-    font-size: 2.5rem;
-    margin: 1rem 0;
-    color: white;
-  }
-  
-  .chapter-header p {
-    font-size: 1.125rem;
-    margin: 0;
-    opacity: 0.9;
-  }
-  
-  /* 学習目標セクション */
-  .objectives-section {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin: 2rem 0;
-  }
-  
-  .objectives-section h2 {
-    color: #0c4a6e;
+  section:first-child {
     margin-top: 0;
   }
   
-  /* コードブロック */
-  .code-block {
-    background: #1e293b;
-    border-radius: 8px;
-    padding: 1.5rem;
+  h2 {
+    font-size: 1.875rem;
+    color: #334155;
+    margin: 2.5rem 0 1.5rem 0;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    color: #475569;
+    margin: 2rem 0 1rem 0;
+  }
+  
+  h4 {
+    font-size: 1.25rem;
+    color: #64748b;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+  
+  p {
     margin: 1rem 0;
-    overflow-x: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .code-block pre {
-    margin: 0;
-    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Monaco', monospace;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-  
-  .code-block code {
-    color: #f1f5f9;
-    background: none;
-    padding: 0;
-    border-radius: 0;
+    text-align: justify;
   }
   
   /* 問題点・利点リスト */
@@ -392,7 +364,7 @@ ws.onclose = () => {
     border: 1px solid #fca5a5;
     border-radius: 8px;
     padding: 1.5rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
   }
   
   .benefit-list {
@@ -400,20 +372,25 @@ ws.onclose = () => {
     border-color: #86efac;
   }
   
-  .problem-list h4, .benefit-list h4 {
-    margin-top: 0;
+  .problem-list h4 {
     color: #991b1b;
+    margin-top: 0;
   }
   
   .benefit-list h4 {
     color: #166534;
+    margin-top: 0;
   }
   
-  /* テーブル */
+  /* 状態テーブル */
+  .state-table {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.5rem 0;
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -450,11 +427,10 @@ ws.onclose = () => {
   }
   
   .use-case-card {
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
   }
   
@@ -466,37 +442,21 @@ ws.onclose = () => {
   .use-case-card h3 {
     margin-top: 0;
     color: #1f2937;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid #e2e8f0;
     padding-bottom: 0.5rem;
   }
   
-  /* 演習セクション */
-  .exercise-answer {
-    margin: 1.5rem 0;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    background: white;
+  .use-case-card ul {
+    margin: 1rem 0 0 0;
+    padding-left: 1.5rem;
   }
   
-  .exercise-answer summary {
-    padding: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    background: #f9fafb;
-    border-radius: 8px 8px 0 0;
-    user-select: none;
-  }
-  
-  .exercise-answer summary:hover {
-    background: #f3f4f6;
-  }
-  
-  .answer-content {
-    padding: 1rem;
+  .use-case-card li {
+    margin: 0.5rem 0;
   }
   
   /* まとめセクション */
-  .summary-section {
+  .summary {
     background: #f8fafc;
     border-radius: 12px;
     padding: 2rem;
@@ -508,7 +468,7 @@ ws.onclose = () => {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
   
   .summary-card {
@@ -521,6 +481,15 @@ ws.onclose = () => {
   .summary-card h3 {
     margin-top: 0;
     color: #1f2937;
+  }
+  
+  .summary-card ul {
+    margin: 1rem 0 0 0;
+    padding-left: 1.5rem;
+  }
+  
+  .summary-card li {
+    margin: 0.5rem 0;
   }
   
   /* 次のステップ */
@@ -560,6 +529,7 @@ ws.onclose = () => {
   .btn-primary:hover {
     background: #2563eb;
     text-decoration: none;
+    transform: translateY(-1px);
   }
   
   .btn-secondary {
@@ -570,20 +540,36 @@ ws.onclose = () => {
   .btn-secondary:hover {
     background: #4b5563;
     text-decoration: none;
+    transform: translateY(-1px);
+  }
+  
+  /* 章の終了 */
+  .chapter-end {
+    border: none;
+    border-top: 2px solid #e2e8f0;
+    margin: 3rem 0 2rem 0;
+  }
+  
+  .completion-message {
+    text-align: center;
+    color: #10b981;
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin: 0;
   }
   
   /* レスポンシブ対応 */
   @media (max-width: 768px) {
-    .container {
+    .page-container {
       padding: 1rem;
     }
     
-    .chapter-header {
+    .content {
       padding: 1.5rem;
     }
     
-    .chapter-header h1 {
-      font-size: 2rem;
+    h2 {
+      font-size: 1.5rem;
     }
     
     .use-cases {
@@ -603,21 +589,13 @@ ws.onclose = () => {
       width: 100%;
       max-width: 300px;
     }
-  }
-  
-  /* アニメーション */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+    
+    table {
+      font-size: 0.875rem;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    
+    th, td {
+      padding: 0.75rem 0.5rem;
     }
-  }
-  
-  .use-case-card, .summary-card {
-    animation: fadeIn 0.6s ease-out;
   }
 </style>

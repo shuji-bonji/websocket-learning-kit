@@ -36,3 +36,23 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+
+## 必要なファイル構成
+
+```
+src/
+├── lib/
+│   ├── types/
+│   │   ├── websocket.ts          # WebSocket型定義
+│   │   └── mdsvex.ts             # MDsveX型定義
+│   ├── components/
+│   │   └── WebSocketDemo.svelte  # TypeScript対応デモ
+│   ├── stores/
+│   │   └── websocket.ts          # TypeScript対応ストア
+├── routes/
+│   └── learn/
+│       └── 01-introduction/
+│           └── +page.svx         # TypeScript対応コンテンツ
+└── mdsvex.svelte                 # TypeScript対応レイアウト
+```

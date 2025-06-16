@@ -56,3 +56,18 @@ src/
 │           └── +page.svx         # TypeScript対応コンテンツ
 └── mdsvex.svelte                 # TypeScript対応レイアウト
 ```
+
+
+## TypeScriptチェック
+```
+npm run check
+```
+## ESLintチェック（もし設定している場合）
+
+```
+npm run lint
+```
+## 開発サーバー起動
+```
+npm run dev
+```

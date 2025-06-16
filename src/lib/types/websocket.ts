@@ -1,4 +1,4 @@
-// 基本的なWebSocket型定義
+// src/lib/types/websocket.ts
 
 /**
  * WebSocket接続状態の型定義
@@ -43,8 +43,9 @@ export interface WebSocketOptions {
 	url: string;
 	protocols?: string | string[];
 	autoConnect?: boolean;
-	reconnectInterval?: number;
-	maxReconnectAttempts?: number;
+	// 再接続機能は後の章で実装予定
+	// reconnectInterval?: number;
+	// maxReconnectAttempts?: number;
 }
 
 /**

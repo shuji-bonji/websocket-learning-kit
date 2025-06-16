@@ -20,8 +20,6 @@ interface WebSocketStoreReturn {
 export function createWebSocketStore(defaultUrl: string = 'wss://echo.websocket.org'): WebSocketStoreReturn {
 	// Internal state
 	let ws: WebSocket | null = null;
-	let reconnectTimeoutId: number | null = null;
-	let reconnectAttempts = 0;
 	
 	// Store state
 	const state: Writable<WebSocketStore> = writable({
@@ -60,7 +58,8 @@ export function createWebSocketStore(defaultUrl: string = 'wss://echo.websocket.
 	
 	function setupWebSocketEvents(websocket: WebSocket, handlers?: WebSocketHandlers): void {
 		websocket.onopen = (event: Event): void => {
-			reconnectAttempts = 0;
+			// 再接続カウントのリセットは後の章で実装予定
+			// reconnectAttempts = 0;
 			updateConnectionState('connected');
 			addMessage('system', '接続が確立されました');
 			handlers?.onOpen?.(event);
@@ -110,8 +109,9 @@ export function createWebSocketStore(defaultUrl: string = 'wss://echo.websocket.
 		const config: WebSocketOptions = {
 			url: defaultUrl,
 			autoConnect: false,
-			reconnectInterval: 3000,
-			maxReconnectAttempts: 5,
+			// 再接続機能は後の章で実装予定
+			// reconnectInterval: 3000,
+			// maxReconnectAttempts: 5,
 			...options
 		};
 		
@@ -129,12 +129,6 @@ export function createWebSocketStore(defaultUrl: string = 'wss://echo.websocket.
 	}
 	
 	function disconnect(): void {
-		// Clear any pending reconnection
-		if (reconnectTimeoutId) {
-			clearTimeout(reconnectTimeoutId);
-			reconnectTimeoutId = null;
-		}
-		
 		if (ws) {
 			ws.close(1000, 'Normal closure by user');
 			ws = null;

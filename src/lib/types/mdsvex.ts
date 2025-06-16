@@ -1,5 +1,3 @@
-// src/lib/types/mdsvex.ts
-
 /**
  * MDsveXページのフロントマター型定義
  */
@@ -68,14 +66,5 @@ export interface NavigationItem {
 	active?: boolean;
 }
 
-// Global types for MDsveX components
-declare global {
-	namespace App {
-		interface PageData {
-			frontmatter?: PageFrontmatter;
-		}
-	}
-}
-
-// Export for module usage
-export {};
+// Export for module usage - no global namespace needed
+export type {};

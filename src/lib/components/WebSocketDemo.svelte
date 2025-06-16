@@ -23,7 +23,7 @@
 	let ws: WebSocket | null = $state(null);
 	let message: string = $state('');
 	let messages: WebSocketMessage[] = $state([]);
-	let connectionState: ConnectionState = $state('disconnected');
+	let connectionState = $state<ConnectionState>('disconnected');
 	
 	// Computed properties
 	let isConnected = $derived(connectionState === 'connected');
